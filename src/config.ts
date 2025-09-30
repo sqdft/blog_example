@@ -30,12 +30,12 @@ export const siteConfig: SiteConfig = {
 			enable: true, // Display the credit text of the banner image
 			text: "Pixiv @chokei", // Credit text to be displayed
 
-			url: "https://image.ai0728.com.cn/random?type=img&dir=package", // (Optional) URL link to the original artwork or artist's page
+			url: "https://fastim.cloudrunmax.top/random?type=img&dir=package", // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	background: {
 		enable: true, // Enable background image
-		src: "https://image.ai0728.com.cn/random?type=img&dir=package", // Background image URL (supports HTTPS)
+		src: "https://fastim.cloudrunmax.top/random?type=img&dir=package", // Background image URL (supports HTTPS)
 		position: "center", // Background position: 'top', 'center', 'bottom'
 		size: "cover", // Background size: 'cover', 'contain', 'auto'
 		repeat: "no-repeat", // Background repeat: 'no-repeat', 'repeat', 'repeat-x', 'repeat-y'
@@ -49,7 +49,7 @@ export const siteConfig: SiteConfig = {
 	favicon: [
 		// Leave this array empty to use the default favicon
 		{
-			src: "https://image.ai0728.com.cn/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg", // Path of the favicon, relative to the /public directory
+			src: "https://fastim.cloudrunmax.top/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg", // Path of the favicon, relative to the /public directory
 			//   theme: 'light',              // (Optional) Either 'light' or 'dark', set only if you have different favicons for light and dark mode
 			//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		},
@@ -71,7 +71,7 @@ export const siteConfig: SiteConfig = {
 		},
 		{
 			name: "私人图床",
-			url: "https://image.ai0728.com.cn/",
+			url: "https://fastim.cloudrunmax.top/",
 			image: "/favicon/imagebed.png",
 			description: "利用CloudflareR2搭建的私人图床",
 			external: true,
@@ -111,7 +111,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "https://image.ai0728.com.cn/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: "https://fastim.cloudrunmax.top/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "流转星(Betsy)",
 	bio: "爱我所爱，我们是彼此永远的动力",
 	links: [
@@ -137,7 +137,7 @@ export const licenseConfig: LicenseConfig = {
 //图片回退
 export const imageFallbackConfig: ImageFallbackConfig = {
 	enable: true,
-	originalDomain: "image.ai0728.com.cn",           // 主力图床
+	originalDomain: "fastim.cloudrunmax.top",           // 主力图床
 	fallbackDomain: "image.cloudrunmax.top",         // R2备用图床
 };
 
