@@ -12,7 +12,7 @@ lang: ''
 ::github{repo="Besty0728/OpenWebUI-Base64-Image"}
 
 # 关于在OpenWebUI中处理Base64返回的图片
-## 1.打开OpenWebUI的函数界面直接选择从新连接导入
+## 1.打开OpenWebUI的函数界面直接选择从新连接链接
 ```bash
 https://github.com/Besty0728/OpenWebUI-Base64-Image/blob/main/image_decoder_pipe.py
 ```
