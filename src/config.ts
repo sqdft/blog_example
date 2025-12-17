@@ -56,7 +56,7 @@ export const siteConfig: SiteConfig = {
 	],
 	apps: [
 		{
-			name: "AI网站",
+			name: "私人AI网站",
 			url: "https://ai0728.com.cn/",
 			image: "/favicon/openwebui.png",
 			description: "智能对话与创作助手",

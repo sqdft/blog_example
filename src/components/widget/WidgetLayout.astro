@@ -22,7 +22,8 @@ const className = Astro.props.class;
     {isCollapsed && <div class="expand-btn px-4 -mb-2">
         <button class="btn-plain rounded-lg w-full h-9">
             <div class="text-[var(--primary)] flex items-center justify-center gap-2 -translate-x-2">
-                <Icon name="material-symbols:more-horiz" class="text-[1.75rem]"></Icon> 更多
+                <Icon name="material-symbols:keyboard-arrow-down" class="text-[1.75rem] expand-icon transition-transform duration-300"></Icon> 
+                <span class="btn-text">更多</span>
             </div>
         </button>
     </div>}
@@ -44,10 +45,22 @@ const className = Astro.props.class;
 
             const id = this.dataset.id;
             const btn = this.querySelector('.expand-btn');
-            const wrapper = this.querySelector(`#${id}`)
+            const wrapper = this.querySelector(`#${id}`);
+            const btnText = btn!.querySelector('.btn-text');
+            const expandIcon = btn!.querySelector('.expand-icon');
+            let isExpanded = false;
+
             btn!.addEventListener('click', () => {
-                wrapper!.classList.remove('collapsed');
-                btn!.classList.add('hidden');
+                isExpanded = !isExpanded;
+                if (isExpanded) {
+                    wrapper!.classList.remove('collapsed');
+                    btnText!.textContent = '收起';
+                    expandIcon!.setAttribute('style', 'transform: rotate(180deg); transition: transform 0.3s ease;');
+                } else {
+                    wrapper!.classList.add('collapsed');
+                    btnText!.textContent = '更多';
+                    expandIcon!.setAttribute('style', 'transform: rotate(0deg); transition: transform 0.3s ease;');
+                }
             })
         }
     }

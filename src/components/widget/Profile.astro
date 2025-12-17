@@ -36,10 +36,22 @@ const config = profileConfig;
         </div>
         
         <!-- 全站访问量统计 -->
-        <div class="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
-            <div class="flex items-center justify-center gap-1">
-                <Icon name="material-symbols:visibility-outline" class="text-base"></Icon>
-                <span id="site-stats">加载中...</span>
+        <div class="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+            <div class="grid grid-cols-2 gap-2" id="site-stats-container">
+                <div class="flex flex-col items-center p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800/50 transition">
+                    <div class="flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+                        <Icon name="material-symbols:visibility-outline" class="text-sm"></Icon>
+                        <span>浏览量</span>
+                    </div>
+                    <span id="site-pageviews" class="text-lg font-bold text-[var(--primary)] mt-0.5">--</span>
+                </div>
+                <div class="flex flex-col items-center p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800/50 transition">
+                    <div class="flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+                        <Icon name="material-symbols:person-outline" class="text-sm"></Icon>
+                        <span>访客数</span>
+                    </div>
+                    <span id="site-visitors" class="text-lg font-bold text-[var(--primary)] mt-0.5">--</span>
+                </div>
             </div>
         </div>
     </div>
@@ -80,15 +92,30 @@ const config = profileConfig;
             const pageviews = statsData.pageviews || 0;
             const visitors = statsData.visits || 0;
             
-            const statsElement = document.getElementById('site-stats');
-            if (statsElement) {
-                statsElement.textContent = `浏览量 ${pageviews} · 访问数 ${visitors}`;
+            // 格式化数字（超过1000显示为 1.2k 格式）
+            const formatNumber = (num) => {
+                if (num >= 10000) return (num / 10000).toFixed(1) + 'w';
+                if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+                return num.toString();
+            };
+            
+            const pageviewsElement = document.getElementById('site-pageviews');
+            const visitorsElement = document.getElementById('site-visitors');
+            if (pageviewsElement) {
+                pageviewsElement.textContent = formatNumber(pageviews);
+            }
+            if (visitorsElement) {
+                visitorsElement.textContent = formatNumber(visitors);
             }
         } catch (error) {
             console.error('获取全站统计失败:', error);
-            const statsElement = document.getElementById('site-stats');
-            if (statsElement) {
-                statsElement.textContent = '统计不可用';
+            const pageviewsElement = document.getElementById('site-pageviews');
+            const visitorsElement = document.getElementById('site-visitors');
+            if (pageviewsElement) {
+                pageviewsElement.textContent = '-';
+            }
+            if (visitorsElement) {
+                visitorsElement.textContent = '-';
             }
         }
     }

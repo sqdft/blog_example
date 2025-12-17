@@ -67,11 +67,15 @@ const className = Astro.props.class;
 
     <!-- page views -->
     {slug && (
-        <div class="flex items-center">
-            <div class="meta-icon">
-                <Icon name="material-symbols:visibility-outline-rounded" class="text-xl"></Icon>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800/60 transition">
+                <Icon name="material-symbols:visibility-outline-rounded" class="text-base text-[var(--primary)]"></Icon>
+                <span class="text-50 text-sm font-medium" id="page-views-count">--</span>
             </div>
-            <span class="text-50 text-sm font-medium" id="page-views-display">加载中...</span>
+            <div class="flex items-center gap-1 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800/60 transition">
+                <Icon name="material-symbols:person-outline" class="text-base text-[var(--primary)]"></Icon>
+                <span class="text-50 text-sm font-medium" id="page-visits-count">--</span>
+            </div>
         </div>
     )}
 </div>
@@ -111,15 +115,23 @@ const className = Astro.props.class;
                 const pageViews = statsData.pageviews || 0;
                 const visits = statsData.visits || 0;
                 
-                const displayElement = document.getElementById('page-views-display');
-                if (displayElement) {
-                    displayElement.textContent = `浏览量 ${pageViews} · 访问数 ${visits}`;
+                const pageViewsElement = document.getElementById('page-views-count');
+                const visitsElement = document.getElementById('page-visits-count');
+                if (pageViewsElement) {
+                    pageViewsElement.textContent = pageViews.toString();
+                }
+                if (visitsElement) {
+                    visitsElement.textContent = visits.toString();
                 }
             } catch (error) {
                 console.error('Error fetching page views:', error);
-                const displayElement = document.getElementById('page-views-display');
-                if (displayElement) {
-                    displayElement.textContent = '统计不可用';
+                const pageViewsElement = document.getElementById('page-views-count');
+                const visitsElement = document.getElementById('page-visits-count');
+                if (pageViewsElement) {
+                    pageViewsElement.textContent = '-';
+                }
+                if (visitsElement) {
+                    visitsElement.textContent = '-';
                 }
             }
         }
