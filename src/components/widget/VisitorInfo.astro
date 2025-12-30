@@ -62,6 +62,13 @@ const style = Astro.props.style;
             <span class="info-label">浏 览 器:</span>
             <span id="browser" class="info-value">正在加载...</span>
         </div>
+        <div class="info-item">
+            <span class="icon-wrapper icon-node">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93c0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41c0 2.08-.8 3.97-2.1 5.39z"></path></svg>
+            </span>
+            <span class="info-label">CDN 节点:</span>
+            <img id="cdn-node" class="cdn-logo" alt="Detecting..." />
+        </div>
     </div>
 </WidgetLayout>
 
@@ -111,6 +118,7 @@ const style = Astro.props.style;
     .icon-isp svg { color: #6ee7b7; }
     .icon-os svg { color: #fbbf24; }
     .icon-browser svg { color: #93c5fd; }
+    .icon-node svg { color: #c4b5fd; }
     .info-label {
         min-width: 70px;
         color: rgba(255, 255, 255, 0.7);
@@ -121,6 +129,19 @@ const style = Astro.props.style;
         overflow-wrap: break-word;
         color: rgba(255, 255, 255, 0.9);
     }
+    .cdn-logo {
+        height: 26px;
+        max-width: 110px;
+        width: auto;
+        object-fit: contain;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 4px;
+        transition: transform 0.2s ease;
+    }
+    .cdn-logo:hover {
+        transform: scale(1.05);
+    }
 </style>
 
 <script>
@@ -128,6 +149,41 @@ const style = Astro.props.style;
     // 博主位置坐标 - 中国山东泰安
     const BLOGGER_LAT = 36.1928;
     const BLOGGER_LON = 117.1200;
+
+    // CDN 资源路径
+    const CDN_IMG_CF = '/cdn/cloudflare.svg';
+    const CDN_IMG_EO = '/cdn/edgeone.png';
+
+    const checkCDN = async () => {
+        const imgEl = document.getElementById('cdn-node') as HTMLImageElement;
+        if (!imgEl) return;
+
+        try {
+            // 发送 HEAD 请求检测响应头
+            const response = await fetch(window.location.href, { method: 'HEAD' });
+            
+            const serverHeader = response.headers.get('server')?.toLowerCase() || '';
+            const cfRay = response.headers.get('cf-ray');
+            const eoId = response.headers.get('x-edgeone-request-id');
+
+            if (cfRay || serverHeader.includes('cloudflare')) {
+                imgEl.src = CDN_IMG_CF;
+                imgEl.alt = 'Cloudflare';
+            } else if (eoId || serverHeader.includes('edgeone') || serverHeader.includes('tencent')) {
+                imgEl.src = CDN_IMG_EO;
+                imgEl.alt = 'EdgeOne';
+            } else {
+                // 如果无法识别，可以根据 IP 查询结果辅助判断，或者暂时留空
+                // 这里暂时设为 Cloudflare 作为默认（或者你可以选择隐藏）
+                imgEl.src = CDN_IMG_CF; 
+                imgEl.alt = 'Cloudflare (Default)';
+            }
+        } catch (e) {
+            console.error('CDN detection failed:', e);
+            // 失败时回退
+            imgEl.src = CDN_IMG_CF;
+        }
+    };
 
     const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
         const R = 6371;
@@ -283,6 +339,8 @@ const style = Astro.props.style;
     const fetchIpInfo = async () => {
         setInfo('os', getOS());
         setInfo('browser', getBrowser());
+        // 启动 CDN 检测
+        checkCDN();
 
         let finalData: ParsedData = {};
 
