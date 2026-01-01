@@ -5,6 +5,7 @@ import "@fontsource/roboto/700.css";
 
 import { profileConfig, siteConfig, googleAnalyticsConfig, antiLeechConfig } from "@/config";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
+import AntigravityBg from "@components/AntigravityBg.svelte";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -360,6 +361,7 @@ const bannerOffset =
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
 		  data-overlayscrollbars-initialize
 	>
+		<AntigravityBg client:only="svelte" />
 		<ConfigCarrier></ConfigCarrier>
 		<slot />
 
