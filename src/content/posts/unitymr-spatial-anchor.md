@@ -1,5 +1,5 @@
 ---
-title: Unity-PICO-空间锚点开发
+title: Unity-PICO-共享空间锚点开发
 published: 2026-01-02T17:01:48
 description: '这是我个人2025年下半年中的一个较为出色的MR（Mixed Reality）原理研究，这一部分国内知识分享很少，知识垄断明显，故决定为后来的其他要研究这方面的做出更多的经验分享！'
 image: '/images/unitysp1.webp'
