@@ -67,7 +67,7 @@ const jsonLd = {
             </div>
 
             <!-- title -->
-            <div class="relative onload-animation">                <div
+            <div class="relative onload-animation">                <h1
                     data-pagefind-body data-pagefind-weight="10" data-pagefind-meta="title"
                     class="transition w-full flex items-center font-bold mb-3
                     text-3xl md:text-[2.25rem]/[2.75rem]
@@ -81,7 +81,7 @@ const jsonLd = {
                         </span>
                     )}
                     <span>{entry.data.title}</span>
-                </div>
+                </h1>
             </div>
 
             <!-- description/excerpt -->
@@ -275,6 +275,8 @@ const jsonLd = {
             <script is:inline>
                 // 异步加载 Mermaid，避免阻塞页面渲染
                 (function() {
+                    // 防止重复加载
+                    if (document.querySelector('script[src*="mermaid"]')) return;
                     var script = document.createElement('script');
                     script.src = 'https://fastly.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
                     script.async = true;
@@ -282,203 +284,205 @@ const jsonLd = {
                 })();
             </script>
             <script is:inline>
-                function initMermaid() {
-                    // 等待 Mermaid 加载完成（增加间隔减少 CPU 开销）
-                    if (typeof mermaid === 'undefined') {
-                        setTimeout(initMermaid, 100);
-                        return;
-                    }
-
-                    // 使用 Expressive Code 生成的属性选择器
-                    const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
-                    if (mermaidBlocks.length === 0) return;
-
-                    const isDarkMode = document.documentElement.classList.contains('dark');
-                    mermaid.initialize({
-                        startOnLoad: false,
-                        theme: isDarkMode ? 'dark' : 'default',
-                        securityLevel: 'loose',
-                        fontFamily: 'inherit',
-                    });
-
-                    // 串行渲染，避免竞态条件
-                    (async function renderSequentially() {
-                        for (let index = 0; index < mermaidBlocks.length; index++) {
-                            const preNode = mermaidBlocks[index];
-                            // 从 Expressive Code 结构中提取源码
-                            // 结构: pre > code > div.ec-line > div.code > span (文本)
-                            let code = '';
-                            const codeLines = preNode.querySelectorAll('.ec-line .code');
-                            if (codeLines.length > 0) {
-                                code = Array.from(codeLines)
-                                    .map(line => line.textContent || '')
-                                    .join('\n')
-                                    .trim();
-                            } else {
-                                // fallback
-                                code = (preNode.textContent || preNode.innerText).trim();
-                            }
-                            
-                            if (!code) continue;
-
-                            // 查找需要替换的节点：优先替换 .expressive-code 容器
-                            let toReplace = preNode;
-                            const figureParent = preNode.closest('figure.frame');
-                            if (figureParent) toReplace = figureParent;
-                            const ecParent = preNode.closest('.expressive-code');
-                            if (ecParent) toReplace = ecParent;
-
-                            // 创建容器
-                            const id = `mermaid-${index}-${Date.now()}`;
-                            const container = document.createElement('div');
-                            container.id = id;
-                            container.className = 'mermaid';
-                            container.setAttribute('data-processed', 'false');
-                            container.style.display = 'flex';
-                            container.style.justifyContent = 'center';
-                            container.style.margin = '2rem 0';
-                            container.style.opacity = '0';
-                            container.style.transition = 'opacity 0.3s ease';
-                            
-                            // 暂存源码以便重新渲染（如切换主题）
-                            container.setAttribute('data-mermaid-src', code);
-                            
-                            toReplace.parentNode.replaceChild(container, toReplace);
-
-                            try {
-                                const { svg } = await mermaid.render(`${id}-svg`, code);
-                                container.innerHTML = svg;
-                                container.style.opacity = '1';
-                            } catch (error) {
-                                console.error('[Mermaid] Render failed:', error, '\nCode:', code);
-                                container.innerHTML = `<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">Mermaid 渲染失败: ${error.message}</div>`;
-                                container.style.opacity = '1';
-                            }
+                // 使用 IIFE 避免 Swup 重新执行时变量重复声明
+                (function() {
+                    'use strict';
+                    
+                    // ===== 资源管理 =====
+                    window._postPageResources = window._postPageResources || {
+                        observer: null,
+                        timeoutId: null,
+                        cleanupRegistered: false
+                    };
+                    
+                    var resources = window._postPageResources;
+                    
+                    // 清理函数
+                    function cleanupResources() {
+                        if (resources.observer) {
+                            resources.observer.disconnect();
+                            resources.observer = null;
                         }
-                    })();
-                }
+                        if (resources.timeoutId) {
+                            clearTimeout(resources.timeoutId);
+                            resources.timeoutId = null;
+                        }
+                    }
+                    
+                    // 注册清理事件（只注册一次）
+                    if (!resources.cleanupRegistered) {
+                        document.addEventListener('swup:willReplaceContent', cleanupResources);
+                        resources.cleanupRegistered = true;
+                    }
+                    
+                    // ===== Mermaid 初始化 =====
+                    function initMermaid() {
+                        if (typeof mermaid === 'undefined') {
+                            setTimeout(initMermaid, 100);
+                            return;
+                        }
 
-                // 处理 details 标签中 Mermaid 渲染
-                function handleDetailsMermaid() {
-                    document.querySelectorAll('details').forEach(details => {
-                        if (details.dataset.mermaidBound) return;
-                        details.dataset.mermaidBound = '1';
-                        
-                        details.addEventListener('toggle', () => {
-                            if (details.open) {
-                                // 检查是否有未渲染的 Mermaid 块
-                                const unrendered = details.querySelectorAll('pre[data-language="mermaid"]');
-                                if (unrendered.length > 0) {
-                                    initMermaid();
+                        var mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+                        if (mermaidBlocks.length === 0) return;
+
+                        var isDarkMode = document.documentElement.classList.contains('dark');
+                        mermaid.initialize({
+                            startOnLoad: false,
+                            theme: isDarkMode ? 'dark' : 'default',
+                            securityLevel: 'loose',
+                            fontFamily: 'inherit',
+                        });
+
+                        // 串行渲染
+                        (async function() {
+                            for (var index = 0; index < mermaidBlocks.length; index++) {
+                                var preNode = mermaidBlocks[index];
+                                var code = '';
+                                var codeLines = preNode.querySelectorAll('.ec-line .code');
+                                if (codeLines.length > 0) {
+                                    code = Array.from(codeLines)
+                                        .map(function(line) { return line.textContent || ''; })
+                                        .join('\n')
+                                        .trim();
+                                } else {
+                                    code = (preNode.textContent || preNode.innerText).trim();
+                                }
+                                
+                                if (!code) continue;
+
+                                var toReplace = preNode;
+                                var figureParent = preNode.closest('figure.frame');
+                                if (figureParent) toReplace = figureParent;
+                                var ecParent = preNode.closest('.expressive-code');
+                                if (ecParent) toReplace = ecParent;
+
+                                var id = 'mermaid-' + index + '-' + Date.now();
+                                var container = document.createElement('div');
+                                container.id = id;
+                                container.className = 'mermaid';
+                                container.setAttribute('data-processed', 'false');
+                                container.style.cssText = 'display:flex;justify-content:center;margin:2rem 0;opacity:0;transition:opacity 0.3s ease';
+                                container.setAttribute('data-mermaid-src', code);
+                                
+                                toReplace.parentNode.replaceChild(container, toReplace);
+
+                                try {
+                                    var result = await mermaid.render(id + '-svg', code);
+                                    container.innerHTML = result.svg;
+                                    container.style.opacity = '1';
+                                } catch (error) {
+                                    console.error('[Mermaid] Render failed:', error);
+                                    container.innerHTML = '<div style="color:red;padding:1rem;border:1px solid red;border-radius:0.5rem">Mermaid 渲染失败: ' + error.message + '</div>';
+                                    container.style.opacity = '1';
                                 }
                             }
-                        });
-                    });
-                }
-
-                // 首次加载
-                initMermaid();
-                handleDetailsMermaid();
-
-                // ===== 资源管理：确保页面切换时正确清理 =====
-                
-                // 存储需要清理的资源
-                window._postPageResources = window._postPageResources || {
-                    observer: null,
-                    timeoutId: null,
-                    initialized: false
-                };
-                
-                // 清理函数
-                function cleanupResources() {
-                    const res = window._postPageResources;
-                    if (res.observer) {
-                        res.observer.disconnect();
-                        res.observer = null;
+                        })();
                     }
-                    if (res.timeoutId) {
-                        clearTimeout(res.timeoutId);
-                        res.timeoutId = null;
-                    }
-                }
-                
-                // 页面切换前清理资源
-                if (!window._postPageResources.initialized) {
-                    document.addEventListener('swup:willReplaceContent', cleanupResources);
-                    window._postPageResources.initialized = true;
-                }
 
-                // 监听主题切换以重新渲染
-                cleanupResources(); // 先清理旧的 observer
-                const themeObserver = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.attributeName === 'class' && mutation.target === document.documentElement) {
-                            // 确保 mermaid 已加载
-                            if (typeof mermaid === 'undefined') return;
-                            
-                            const isDark = document.documentElement.classList.contains('dark');
-                            mermaid.initialize({ theme: isDark ? 'dark' : 'default' });
-                            
-                            // 重新渲染页面上的所有 mermaid 图表
-                            document.querySelectorAll('.mermaid[data-mermaid-src]').forEach(async (container) => {
-                                const code = container.getAttribute('data-mermaid-src');
-                                if (code) {
-                                    const id = container.id;
-                                    try {
-                                        const { svg } = await mermaid.render(`${id}-rerender-${Date.now()}`, code);
-                                        container.innerHTML = svg;
-                                    } catch (e) {
-                                        console.error('[Mermaid] Re-render failed:', e);
+                    // 处理 details 标签
+                    function handleDetailsMermaid() {
+                        document.querySelectorAll('details').forEach(function(details) {
+                            if (details.dataset.mermaidBound) return;
+                            details.dataset.mermaidBound = '1';
+                            details.addEventListener('toggle', function() {
+                                if (details.open) {
+                                    var unrendered = details.querySelectorAll('pre[data-language="mermaid"]');
+                                    if (unrendered.length > 0) {
+                                        initMermaid();
                                     }
                                 }
                             });
-                        }
-                    });
-                });
-                themeObserver.observe(document.documentElement, { attributes: true });
-                window._postPageResources.observer = themeObserver;
+                        });
+                    }
 
-                // Swup 兼容：页面切换后重新初始化
-                document.addEventListener('swup:contentReplaced', () => {
+                    // 主题切换监听
+                    function setupThemeObserver() {
+                        // 先清理旧的
+                        cleanupResources();
+                        
+                        var observer = new MutationObserver(function(mutations) {
+                            mutations.forEach(function(mutation) {
+                                if (mutation.attributeName === 'class' && mutation.target === document.documentElement) {
+                                    // 确保 mermaid 已加载
+                                    if (typeof mermaid === 'undefined') return;
+                                    
+                                    var isDark = document.documentElement.classList.contains('dark');
+                                    mermaid.initialize({ theme: isDark ? 'dark' : 'default' });
+                                    
+                                    document.querySelectorAll('.mermaid[data-mermaid-src]').forEach(async function(container) {
+                                        var code = container.getAttribute('data-mermaid-src');
+                                        if (code) {
+                                            try {
+                                                var result = await mermaid.render(container.id + '-rerender-' + Date.now(), code);
+                                                container.innerHTML = result.svg;
+                                            } catch (e) {
+                                                console.error('[Mermaid] Re-render failed:', e);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                        observer.observe(document.documentElement, { attributes: true });
+                        resources.observer = observer;
+                    }
+
+                    // 初始化
                     initMermaid();
                     handleDetailsMermaid();
-                });
+                    setupThemeObserver();
+
+                    // Swup 兼容（只注册一次）
+                    if (!window._mermaidSwupRegistered) {
+                        document.addEventListener('swup:contentReplaced', function() {
+                            initMermaid();
+                            handleDetailsMermaid();
+                            setupThemeObserver();
+                        });
+                        window._mermaidSwupRegistered = true;
+                    }
+                })();
             </script>
             
             <!-- 移动端性能优化：加载完成后预渲染所有内容 -->
             <script is:inline>
-                // 页面加载完成后，移除 content-visibility 限制确保滚动流畅
-                function enableSmoothScroll() {
-                    const container = document.querySelector('.markdown-content');
-                    if (container) {
-                        container.classList.add('content-ready');
-                    }
-                }
-                
-                // 设置延迟渲染（带资源追踪）
-                function scheduleContentReady() {
-                    // 清理之前的定时器
-                    if (window._postPageResources && window._postPageResources.timeoutId) {
-                        clearTimeout(window._postPageResources.timeoutId);
+                // 使用 IIFE 避免变量冲突
+                (function() {
+                    'use strict';
+                    
+                    function enableSmoothScroll() {
+                        var container = document.querySelector('.markdown-content');
+                        if (container) {
+                            container.classList.add('content-ready');
+                        }
                     }
                     
-                    const timeoutId = setTimeout(enableSmoothScroll, 2000);
-                    
-                    // 存储以便清理
-                    if (window._postPageResources) {
-                        window._postPageResources.timeoutId = timeoutId;
+                    function scheduleContentReady() {
+                        var resources = window._postPageResources;
+                        if (resources && resources.timeoutId) {
+                            clearTimeout(resources.timeoutId);
+                        }
+                        
+                        var timeoutId = setTimeout(enableSmoothScroll, 2000);
+                        
+                        if (resources) {
+                            resources.timeoutId = timeoutId;
+                        }
                     }
-                }
-                
-                // 首次加载
-                if (document.readyState === 'complete') {
-                    scheduleContentReady();
-                } else {
-                    window.addEventListener('load', scheduleContentReady, { once: true });
-                }
-                
-                // Swup 页面切换后也需要处理
-                document.addEventListener('swup:contentReplaced', scheduleContentReady);
+                    
+                    // 首次加载
+                    if (document.readyState === 'complete') {
+                        scheduleContentReady();
+                    } else {
+                        window.addEventListener('load', scheduleContentReady, { once: true });
+                    }
+                    
+                    // Swup 页面切换（只注册一次）
+                    if (!window._contentReadySwupRegistered) {
+                        document.addEventListener('swup:contentReplaced', scheduleContentReady);
+                        window._contentReadySwupRegistered = true;
+                    }
+                })();
             </script>
     <br>
 
