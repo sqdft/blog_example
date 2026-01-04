@@ -288,6 +288,34 @@ const jsonLd = {
                 (function() {
                     'use strict';
                     
+                    // ===== prerenderAll 模式：预渲染所有内容 =====
+                    if (prerenderAll) {
+                        // 1. 禁用图片懒加载
+                        document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
+                            img.removeAttribute('loading');
+                            img.setAttribute('loading', 'eager');
+                        });
+                        
+                        // 2. 临时展开所有 details，强制浏览器渲染代码块、公式等
+                        var closedDetails = [];
+                        document.querySelectorAll('details:not([open])').forEach(function(d) {
+                            closedDetails.push(d);
+                            d.open = true;
+                        });
+                        
+                        // 3. 等待浏览器完成布局计算后恢复折叠状态
+                        if (closedDetails.length > 0) {
+                            // 使用 requestAnimationFrame 确保渲染完成
+                            requestAnimationFrame(function() {
+                                requestAnimationFrame(function() {
+                                    closedDetails.forEach(function(d) {
+                                        d.open = false;
+                                    });
+                                });
+                            });
+                        }
+                    }
+                    
                     // ===== 资源管理 =====
                     window._postPageResources = window._postPageResources || {
                         observer: null,
