@@ -5,11 +5,17 @@
         @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition-all duration-300 ease-out;
         /* 增加更细腻的边框和阴影处理，提升立体感 */
         border: 1px solid var(--line-divider);
+        /* iOS Safari 支持 */
+        /* stylelint-disable-next-line property-no-vendor-prefix */
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
     }
     
     /* 增加毛玻璃效果工具类 */
     .glass-effect {
-        @apply backdrop-blur-md bg-[var(--card-bg-transparent)];
+        @apply bg-[var(--card-bg-transparent)];
+        -webkit-backdrop-filter: blur(12px); /* iOS Safari 支持 */
+        backdrop-filter: blur(12px);
         border: 1px solid var(--line-divider);
     }
 
@@ -43,6 +49,10 @@
 
     .float-panel {
         @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-all duration-300 shadow-xl dark:shadow-none border border-[var(--line-divider)];
+        /* iOS Safari 支持 */
+        /* stylelint-disable-next-line property-no-vendor-prefix */
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
     }
     .float-panel-closed {
         @apply -translate-y-4 opacity-0 pointer-events-none scale-95;
@@ -100,6 +110,7 @@
 
     .hide-scrollbar {
         -ms-overflow-style: none;
+        /* stylelint-disable-next-line property-no-unknown */
         scrollbar-width: none;
     }
     .hide-scrollbar::-webkit-scrollbar {

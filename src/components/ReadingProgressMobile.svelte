@@ -35,6 +35,7 @@
 {#if visible && showFixed}
     <div
         class="lg:hidden fixed top-0 left-0 right-0 z-[60] px-4 py-2 bg-[var(--card-bg)] backdrop-blur-md border-b border-black/5 dark:border-white/10 shadow-sm transition-all duration-300 animate-slide-down"
+        style="-webkit-backdrop-filter: blur(12px);"
     >
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">

@@ -330,6 +330,7 @@
     border-radius: var(--radius-large);
     z-index: 1000;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border: 1px solid var(--btn-regular-bg);
     overflow: hidden;
