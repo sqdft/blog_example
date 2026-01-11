@@ -2,21 +2,26 @@
 
 @layer components {
     .card-base {
-        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition-all duration-300 ease-out;
-        /* 增加更细腻的边框和阴影处理，提升立体感 */
+        @apply rounded-[var(--radius-large)] overflow-hidden transition-all duration-300 ease-out;
+        /* 使用半透明背景色配合 backdrop-filter */
+        background-color: var(--card-bg-transparent);
         border: 1px solid var(--line-divider);
-        /* iOS Safari 支持 */
-        /* stylelint-disable-next-line property-no-vendor-prefix */
-        -webkit-backdrop-filter: blur(8px);
-        backdrop-filter: blur(8px);
+        /* iOS Safari 支持 - 毛玻璃效果 */
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        /* 硬件加速 */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
     
     /* 增加毛玻璃效果工具类 */
     .glass-effect {
-        @apply bg-[var(--card-bg-transparent)];
-        -webkit-backdrop-filter: blur(12px); /* iOS Safari 支持 */
-        backdrop-filter: blur(12px);
+        background-color: var(--card-bg-transparent);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
         border: 1px solid var(--line-divider);
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
 
     /* 音乐播放器全局样式 */
@@ -48,11 +53,13 @@
     }
 
     .float-panel {
-        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-all duration-300 shadow-xl dark:shadow-none border border-[var(--line-divider)];
-        /* iOS Safari 支持 */
-        /* stylelint-disable-next-line property-no-vendor-prefix */
+        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden transition-all duration-300 shadow-xl dark:shadow-none border border-[var(--line-divider)];
+        /* 使用半透明背景 + iOS Safari 支持 */
+        background-color: var(--float-panel-bg-transparent);
         -webkit-backdrop-filter: blur(12px);
         backdrop-filter: blur(12px);
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
     .float-panel-closed {
         @apply -translate-y-4 opacity-0 pointer-events-none scale-95;
