@@ -37,59 +37,6 @@ const config = profileConfig;
                 {config.links[0].name}
             </a>}
         </div>
-        
-        <!-- 全站访问量统计 - 美化版 -->
-        <div class="mt-4 pt-4 border-t border-[var(--line-divider)]">
-            <div class="flex items-center justify-center gap-1.5 mb-3">
-                <Icon name="material-symbols:analytics-outline-rounded" class="text-[var(--primary)] text-base"></Icon>
-                <span class="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">站点统计</span>
-            </div>
-            <div class="grid grid-cols-2 gap-3" id="site-stats-container">
-                <!-- 浏览量卡片 -->
-                <div class="group relative overflow-hidden p-3 rounded-xl 
-                    bg-[var(--btn-regular-bg)] 
-                    border border-[var(--line-divider)]
-                    hover:border-[var(--primary)]
-                    hover:shadow-md transition-all duration-300 ease-out">
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-1.5 mb-1.5">
-                            <div class="w-6 h-6 rounded-lg bg-[var(--card-bg)] flex items-center justify-center shadow-sm">
-                                <Icon name="material-symbols:visibility-outline" class="text-[var(--primary)] text-sm"></Icon>
-                            </div>
-                            <span class="text-xs font-medium text-neutral-500 dark:text-neutral-400">浏览量</span>
-                        </div>
-                        <div class="flex items-baseline gap-1">
-                            <span id="site-pageviews" class="text-xl font-bold text-[var(--primary)] stats-number">--</span>
-                            <span class="text-[10px] text-neutral-400">PV</span>
-                        </div>
-                    </div>
-                    <!-- 装饰背景 -->
-                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-[var(--primary)] opacity-5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
-                </div>
-
-                <!-- 访客数卡片 -->
-                <div class="group relative overflow-hidden p-3 rounded-xl 
-                    bg-[var(--btn-regular-bg)] 
-                    border border-[var(--line-divider)]
-                    hover:border-[var(--primary)]
-                    hover:shadow-md transition-all duration-300 ease-out">
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-1.5 mb-1.5">
-                            <div class="w-6 h-6 rounded-lg bg-[var(--card-bg)] flex items-center justify-center shadow-sm">
-                                <Icon name="material-symbols:person-outline" class="text-[var(--primary)] text-sm"></Icon>
-                            </div>
-                            <span class="text-xs font-medium text-neutral-500 dark:text-neutral-400">访客数</span>
-                        </div>
-                        <div class="flex items-baseline gap-1">
-                            <span id="site-visitors" class="text-xl font-bold text-[var(--primary)] stats-number">--</span>
-                            <span class="text-[10px] text-neutral-400">UV</span>
-                        </div>
-                    </div>
-                    <!-- 装饰背景 -->
-                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-[var(--primary)] opacity-5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
