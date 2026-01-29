@@ -23,17 +23,17 @@ export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
 	},
 	[LinkPreset.Stats]: {
 		name: "统计",
-		url: "https://umami.micostar.cc/share/X9ZZZ5l2xErS44Rc",
-		external: true,
+		url: "#",
+		external: false,
 	},
 	[LinkPreset.Status]: {
 		name: "状态",
-		url: "https://uptime.micostar.cc/status/default",
-		external: true,
+		url: "#",
+		external: false,
 	},
 	[LinkPreset.Monitor]: {
 		name: "流量监控",
-		url: "https://eo.micostar.cc",
-		external: true,
+		url: "#",
+		external: false,
 	},
 };

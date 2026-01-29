@@ -11,10 +11,10 @@ import type {
 import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "Betsy Blog",
-	subtitle: "分享网络技术、服务器部署、Unity开发、AI技术应用与原理",
+	title: "sqdft Blog",
+	subtitle: "分享技术与生活",
 	description:
-		"分享网络技术、服务器部署、Unity开发、AI技术应用与原理、作者为流转星(Betsy)",
+		"sqdft的个人博客，分享技术与生活",
 
 	keywords: [],
 	lang: "zh_CN", // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko', 'es', 'th'
@@ -32,12 +32,12 @@ export const siteConfig: SiteConfig = {
 			enable: true, // Display the credit text of the banner image
 			text: "Pixiv @chokei", // Credit text to be displayed
 
-			url: "https://img.micostar.cc/random", // (Optional) URL link to the original artwork or artist's page
+			url: "/images/background.jpg", // 可以改为你自己的背景图链接
 		},
 	},
 	background: {
 		enable: true, // Enable background image
-		src: "https://img.micostar.cc/random", // 优先使用新 API
+		src: "/images/background.jpg", // 可以改为你自己的背景图
 		position: "center", // Background position: 'top', 'center', 'bottom'
 		size: "cover", // Background size: 'cover', 'contain', 'auto'
 		repeat: "no-repeat", // Background repeat: 'no-repeat', 'repeat', 'repeat-x', 'repeat-y'
@@ -58,45 +58,10 @@ export const siteConfig: SiteConfig = {
 	],
 	apps: [
 		{
-			name: "私人AI网站",
-			url: "https://ai0728.com.cn/",
-			image: "/favicon/openwebui.webp",
-			description: "智能对话与创作助手",
-			external: true,
-		},
-		{
-			name: "私人云盘",
-			url: "https://cloudrunmax.top/",
-			image: "/favicon/cloudreve.webp",
-			description: "内容管理入口",
-			external: true,
-		},
-		{
-			name: "私人图床",
-			url: "https://image.cloudrunmax.top/",
-			image: "/favicon/imagebed.webp",
-			description: "利用CloudflareR2搭建的私人图床",
-			external: true,
-		},
-		{
-			name: "私人AI绘图",
-			url: "https://aiimage.cloudrunmax.top/",
-			image: "/favicon/aiimage.webp",
-			description: "利用CloudflareWorker搭建的私人AI绘图",
-			external: true,
-		},
-		{
-			name: "私人AI提示词",
-			url: "https://aiprompt.ai0728.com.cn/",
-			image: "/favicon/aiprompt.webp",
-			description: "个人研究的较棒AI提示词集合",
-			external: true,
-		},
-		{
-			name: "提示词优化",
-			url: "https://prompt.micostar.cc",
-			image: "/favicon/prompts.webp",
-			description: "AI 提示词一键优化工具",
+			name: "个人博客",
+			url: "https://xiaoyang.zone.id",
+			image: "/favicon/blog.webp",
+			description: "我的个人博客网站",
 			external: true,
 		},
 	],
@@ -108,27 +73,18 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		LinkPreset.Friends,
 		LinkPreset.Apps,
-		LinkPreset.Donate,
-		LinkPreset.Stats,
-		LinkPreset.Status,
-		LinkPreset.Monitor,
 	],
 };
 
 export const profileConfig: ProfileConfig = {
 	avatar: "/images/avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-	name: "流转星(Betsy)",
-	bio: ["爱我所爱，我们是彼此永远的动力"],
+	name: "sqdft",
+	bio: ["分享技术与生活"],
 	links: [
-		{
-			name: "Bilibli",
-			icon: "fa6-brands:bilibili",
-			url: "https://space.bilibili.com/420378171",
-		},
 		{
 			name: "GitHub",
 			icon: "fa6-brands:github",
-			url: "https://github.com/Besty0728",
+			url: "https://github.com/sqdft",
 		},
 	],
 };
@@ -141,13 +97,13 @@ export const licenseConfig: LicenseConfig = {
 
 //图片回退
 export const imageFallbackConfig: ImageFallbackConfig = {
-	enable: true,
+	enable: false, // 禁用图床回退功能
 	originalDomain: "img.micostar.cc", // 主力图床 (新项目)
 	fallbackDomain: "image.cloudrunmax.top", // R2 备用图床 (旧项目)
 };
 
 export const umamiConfig: UmamiConfig = {
-	enable: true,
+	enable: false, // 禁用Umami统计
 	baseUrl: "https://umami.micostar.cc",
 	shareId: "X9ZZZ5l2xErS44Rc",
 	timezone: "Asia/Shanghai",
@@ -155,8 +111,8 @@ export const umamiConfig: UmamiConfig = {
 
 // 防盗链/域名保护配置
 export const antiLeechConfig: AntiLeechConfig = {
-	enable: true,
-	officialSites: [{ url: "https://www.micostar.cc", name: "主站" }],
+	enable: false, // 禁用防盗链功能
+	officialSites: [{ url: "https://xiaoyang.zone.id", name: "主站" }],
 	debug: false,
 	warningTitle: "⚠️ 域名安全警告",
 	warningMessage:
@@ -164,7 +120,7 @@ export const antiLeechConfig: AntiLeechConfig = {
 };
 
 export const googleAnalyticsConfig = {
-	enable: true,
+	enable: false, // 禁用Google Analytics
 	measurementId: "G-68S9RLWRP0",
 };
 
