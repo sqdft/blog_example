@@ -55,8 +55,11 @@ if (isLocal) {
 		console.error(
 			`\n[ERROR] Image file not found: ${normalizedPath.replace("../../", "src/")}`,
 		);
+		// 设置一个默认图片或者跳过渲染
+		img = null;
+	} else {
+		img = await file();
 	}
-	img = await file();
 }
 
 const imageClass = `w-full h-full object-${fit}`;

@@ -12,7 +12,7 @@
 ```json
 {
   "name": "sqdft Blog",
-  "avatar": "https://xiaoyang.zone.id/images/avatar.webp",
+  "avatar": "https://g.gtimg.cn/music/photo_new/T053XD010017SNjl46uSEf.jpg",
   "introduction": "分享技术与生活",
   "url": "https://xiaoyang.zone.id"
 }

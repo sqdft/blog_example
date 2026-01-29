@@ -32,12 +32,12 @@ export const siteConfig: SiteConfig = {
 			enable: true, // Display the credit text of the banner image
 			text: "Pixiv @chokei", // Credit text to be displayed
 
-			url: "/images/background.jpg", // 可以改为你自己的背景图链接
+			url: "https://g.gtimg.cn/music/photo_new/T053XD01000ID6X30dg8kF.png", // 背景图片来源链接
 		},
 	},
 	background: {
 		enable: true, // Enable background image
-		src: "/images/background.jpg", // 可以改为你自己的背景图
+		src: "https://g.gtimg.cn/music/photo_new/T053XD01000ID6X30dg8kF.png", // 使用远程图片作为背景
 		position: "center", // Background position: 'top', 'center', 'bottom'
 		size: "cover", // Background size: 'cover', 'contain', 'auto'
 		repeat: "no-repeat", // Background repeat: 'no-repeat', 'repeat', 'repeat-x', 'repeat-y'
@@ -77,7 +77,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "/images/avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: "https://g.gtimg.cn/music/photo_new/T053XD010017SNjl46uSEf.jpg", // 使用远程图片作为头像
 	name: "sqdft",
 	bio: ["分享技术与生活"],
 	links: [

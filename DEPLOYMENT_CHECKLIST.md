@@ -11,9 +11,9 @@
 - [x] 更新 `README.md` 项目说明
 
 ### 2. 静态资源
-- [ ] 替换 `public/images/avatar.webp` 为你的头像
-- [ ] 替换 `public/favicon/` 目录下的网站图标
-- [ ] 添加 `public/images/background.jpg` 背景图（可选）
+- [x] 头像已设置为远程图片
+- [x] 背景图已设置为远程图片
+- [ ] 替换 `public/favicon/` 目录下的网站图标（可选）
 
 ### 3. 域名配置
 - [x] 修改 `astro.config.mjs` 中的 `site` 字段

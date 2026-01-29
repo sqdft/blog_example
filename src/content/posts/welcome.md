@@ -2,7 +2,6 @@
 title: 欢迎来到我的博客
 published: 2025-01-29
 description: 欢迎来到 sqdft 的个人博客，这里将分享技术与生活的点点滴滴。
-image: ./cover.jpg
 tags: [博客, 欢迎]
 category: 日常
 draft: false
