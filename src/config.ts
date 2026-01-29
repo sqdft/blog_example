@@ -59,7 +59,7 @@ export const siteConfig: SiteConfig = {
 	apps: [
 		{
 			name: "个人博客",
-			url: "https://xiaoyang.zone.id",
+			url: "https://blogexample1.a2981515c.workers.dev",
 			image: "/favicon/blog.webp",
 			description: "我的个人博客网站",
 			external: true,
@@ -103,7 +103,7 @@ export const imageFallbackConfig: ImageFallbackConfig = {
 };
 
 export const umamiConfig: UmamiConfig = {
-	enable: false, // 禁用Umami统计
+	enable: false, // 禁用别人的Umami统计
 	baseUrl: "https://umami.micostar.cc",
 	shareId: "X9ZZZ5l2xErS44Rc",
 	timezone: "Asia/Shanghai",
@@ -112,7 +112,7 @@ export const umamiConfig: UmamiConfig = {
 // 防盗链/域名保护配置
 export const antiLeechConfig: AntiLeechConfig = {
 	enable: false, // 禁用防盗链功能
-	officialSites: [{ url: "https://xiaoyang.zone.id", name: "主站" }],
+	officialSites: [{ url: "https://blogexample1.a2981515c.workers.dev", name: "主站" }],
 	debug: false,
 	warningTitle: "⚠️ 域名安全警告",
 	warningMessage:
@@ -120,7 +120,7 @@ export const antiLeechConfig: AntiLeechConfig = {
 };
 
 export const googleAnalyticsConfig = {
-	enable: false, // 禁用Google Analytics
+	enable: false, // 使用不蒜子统计，禁用GA
 	measurementId: "G-68S9RLWRP0",
 };
 
