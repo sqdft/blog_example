@@ -8,6 +8,7 @@ import {
 	googleAnalyticsConfig,
 	profileConfig,
 	siteConfig,
+	umamiConfig,
 } from "@/config";
 import AntigravityBg from "@components/AntigravityBg.tsx";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
@@ -331,10 +332,6 @@ const bannerOffset =
 
 		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 		<!-- Resource Hints removed per request -->
-		<!-- Umami 分析 -->
-		{umamiConfig.enable && (
-			<script defer src={`${umamiConfig.baseUrl}/script.js`} data-website-id="46580811-c547-4c3a-b5d9-69ec82ae6e80"></script>
-		)}
 
 		<!-- Google tag (gtag.js) -->
 		{googleAnalyticsConfig.enable && (
