@@ -64,6 +64,18 @@ const jsonLd = {
                     </div>
                     <div class="text-sm">{remarkPluginFrontmatter.minutes} 分钟</div>
                 </div>
+                <div class="flex flex-row items-center">
+                    <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+                        <Icon name="material-symbols:visibility-outline-rounded"></Icon>
+                    </div>
+                    <div class="text-sm"><span id={`busuanzi_page_pv`}>-</span> 阅读</div>
+                </div>
+                <div class="flex flex-row items-center">
+                    <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+                        <Icon name="material-symbols:person-outline-rounded"></Icon>
+                    </div>
+                    <div class="text-sm"><span id={`busuanzi_page_uv`}>-</span> 访客</div>
+                </div>
             </div>
 
             <!-- title -->
@@ -130,7 +142,7 @@ const jsonLd = {
                         <p class="text-black/80 dark:text-white/80 text-sm">这篇文章是否对你有帮助？</p>
                     </div>
                     <div class="flex gap-2">
-                        <a href="https://blogexample1.a2981515c.workers.dev" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1 px-3 py-1.5 rounded bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] text-[var(--btn-content)] text-xs font-medium transition-all active:scale-95">
+                        <a href="https://blog-example-b97.pages.dev" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1 px-3 py-1.5 rounded bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] text-[var(--btn-content)] text-xs font-medium transition-all active:scale-95">
                             <Icon name="material-symbols:contact-mail-outline" class="text-[0.875rem] group-hover:scale-110 transition-transform"></Icon>
                             联系
                         </a>

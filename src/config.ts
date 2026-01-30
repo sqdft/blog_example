@@ -49,17 +49,15 @@ export const siteConfig: SiteConfig = {
 		depth: 2, // Maximum heading depth to show in the table, from 1 to 3
 	},
 	favicon: [
-		// Leave this array empty to use the default favicon
+		// 使用你提供的远程图片作为网站图标
 		{
-			src: "https://image.cloudrunmax.top/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg", // Path of the favicon, relative to the /public directory
-			//   theme: 'light',              // (Optional) Either 'light' or 'dark', set only if you have different favicons for light and dark mode
-			//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
+			src: "https://g.gtimg.cn/music/photo_new/T053XD010017SNjl46uSEf.jpg",
 		},
 	],
 	apps: [
 		{
 			name: "个人博客",
-			url: "https://blogexample1.a2981515c.workers.dev",
+			url: "https://blog-example-b97.pages.dev",
 			image: "/favicon/blog.webp",
 			description: "我的个人博客网站",
 			external: true,
@@ -112,7 +110,7 @@ export const umamiConfig: UmamiConfig = {
 // 防盗链/域名保护配置
 export const antiLeechConfig: AntiLeechConfig = {
 	enable: false, // 禁用防盗链功能
-	officialSites: [{ url: "https://blogexample1.a2981515c.workers.dev", name: "主站" }],
+	officialSites: [{ url: "https://blog-example-b97.pages.dev", name: "主站" }],
 	debug: false,
 	warningTitle: "⚠️ 域名安全警告",
 	warningMessage:

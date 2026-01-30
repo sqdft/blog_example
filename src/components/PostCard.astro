@@ -44,13 +44,13 @@ const coverWidth = "28%";
 const { remarkPluginFrontmatter } = await entry.render();
 ---
 <div id={`post-card-${entry.slug}`} data-slug={entry.slug} data-published={published.getTime()} data-updated={updated?.getTime() || published.getTime()} data-pinned={isPinned} class:list={["card-base flex flex-col-reverse md:flex-col w-full rounded-[var(--radius-large)] overflow-hidden relative group", className]} style={style}>
-    <div class:list={["pl-6 md:pl-9 pr-6 md:pr-2 pt-6 md:pt-7 pb-6 relative z-10", {"w-full md:w-[calc(100%_-_52px_-_12px)]": !hasCover, "w-full md:w-[calc(100%_-_var(--coverWidth)_-_12px)]": hasCover}]}>
+    <div class:list={["pl-6 md:pl-9 pr-6 md:pr-2 pt-3 md:pt-4 pb-3 relative z-10", {"w-full md:w-[calc(100%_-_52px_-_12px)]": !hasCover, "w-full md:w-[calc(100%_-_var(--coverWidth)_-_12px)]": hasCover}]}>
         <a href={url}
-           class="transition-colors duration-300 group-hover:text-[var(--primary)] w-full block font-bold mb-3 text-3xl text-90
+           class="transition-colors duration-300 group-hover:text-[var(--primary)] w-full block font-bold mb-1.5 text-lg text-90
         dark:text-white/90
         active:text-[var(--title-active)] dark:active:text-[var(--title-active)]
-        before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
-        before:absolute before:top-[35px] before:left-[18px] before:hidden md:before:block
+        before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
+        before:absolute before:top-[22px] before:left-[18px] before:hidden md:before:block
         ">
             {isPinned && (
                 <div class="inline-flex items-center gap-1 align-middle mr-2 px-2 py-1 rounded-md
@@ -66,28 +66,32 @@ const { remarkPluginFrontmatter } = await entry.render();
         </a>
 
         <!-- metadata -->
-        <PostMetadata published={published} updated={updated} tags={tags} hideTagsForMobile={true} hideUpdateDate={false} class="mb-4"></PostMetadata>
+        <PostMetadata published={published} updated={updated} tags={tags} hideTagsForMobile={true} hideUpdateDate={false} class="mb-3"></PostMetadata>
 
         <!-- description -->
-        <div class:list={["transition text-75 mb-3.5 pr-4", {"line-clamp-2 md:line-clamp-1": !description}]}>
+        <div class:list={["transition text-sm mb-2 pr-4 text-black/70 dark:text-white/70", {"line-clamp-2": !description}]}>
             { description || remarkPluginFrontmatter.excerpt }
         </div>
 
         <!-- word count, read time and page views -->
-        <div class="text-base text-black/40 dark:text-white/40 flex gap-4 transition items-center flex-wrap mt-2">
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
-                <Icon name="material-symbols:notes-rounded" class="text-base text-[var(--primary)] opacity-90"></Icon>
-                <span>{remarkPluginFrontmatter.words} 字</span>
+        <div class="text-sm text-black/40 dark:text-white/40 flex gap-2 transition items-center flex-wrap mt-1.5">
+            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
+                <Icon name="material-symbols:notes-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs">{remarkPluginFrontmatter.words} 字</span>
             </div>
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
-                <Icon name="material-symbols:schedule-outline-rounded" class="text-base text-[var(--primary)] opacity-90"></Icon>
-                <span>{remarkPluginFrontmatter.minutes} 分钟</span>
+            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
+                <Icon name="material-symbols:schedule-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs">{remarkPluginFrontmatter.minutes} 分钟</span>
             </div>
-            <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
-                    <Icon name="material-symbols:visibility-outline-rounded" class="text-base text-[var(--primary)] opacity-90"></Icon>
-                    <span class="font-medium">阅读</span>
-                </span>
+            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
+                <Icon name="material-symbols:visibility-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs" id={`busuanzi_page_pv_${entry.slug}`}>-</span>
+                <span class="text-xs">阅读</span>
+            </div>
+            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
+                <Icon name="material-symbols:person-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs" id={`busuanzi_page_uv_${entry.slug}`}>-</span>
+                <span class="text-xs">访客</span>
             </div>
             </div>
         </div>
@@ -96,8 +100,8 @@ const { remarkPluginFrontmatter } = await entry.render();
 
     {hasCover && <a href={url} aria-label={title}
                     class:list={["group/cover",
-                        "max-h-[20vh] md:max-h-none mx-4 mt-4 -mb-2 md:mb-0 md:mx-0 md:mt-0",
-                        "md:w-[var(--coverWidth)] relative md:absolute md:top-3 md:bottom-3 md:right-3 rounded-xl overflow-hidden active:scale-95 transition-transform duration-300",
+                        "max-h-[16vh] md:max-h-none mx-4 mt-3 -mb-1.5 md:mb-0 md:mx-0 md:mt-0",
+                        "md:w-[var(--coverWidth)] relative md:absolute md:top-2.5 md:bottom-2.5 md:right-3 rounded-xl overflow-hidden active:scale-95 transition-transform duration-300",
                         "tilt-card" // Added for 3D tilt effect
                     ]} >
         <div class="absolute pointer-events-none z-10 w-full h-full group-hover/cover:bg-black/30 group-active/cover:bg-black/50 transition-colors duration-300"></div>
@@ -114,7 +118,7 @@ const { remarkPluginFrontmatter } = await entry.render();
 
     {!hasCover &&
         <a href={url} aria-label={title} class="!hidden md:!flex btn-regular w-[3.25rem]
-         absolute right-3 top-3 bottom-3 rounded-xl bg-[var(--enter-btn-bg)]
+         absolute right-3 top-2.5 bottom-2.5 rounded-xl bg-[var(--enter-btn-bg)]
          hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95
          border border-[var(--line-divider)]
         ">
