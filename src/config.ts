@@ -122,6 +122,13 @@ export const googleAnalyticsConfig = {
 	measurementId: "G-68S9RLWRP0",
 };
 
+// Supabase 文章统计配置
+export const supabaseConfig = {
+	enable: true, // 启用Supabase文章统计
+	url: import.meta.env.PUBLIC_SUPABASE_URL || "", // 从环境变量获取
+	anonKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || "", // 从环境变量获取
+};
+
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	theme: "github-dark",
 };

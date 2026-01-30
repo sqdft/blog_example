@@ -85,7 +85,12 @@ const { remarkPluginFrontmatter } = await entry.render();
             </div>
             <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
                 <Icon name="material-symbols:visibility-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs article-view-count" data-article-id={entry.slug}>-</span>
                 <span class="text-xs">阅读</span>
+            </div>
+            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
+                <Icon name="material-symbols:person-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
+                <span class="text-xs">访客</span>
             </div>
             </div>
         </div>

@@ -13,10 +13,16 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
+# environment variables - 敏感信息不上传
 .env
 .env.local
 .env.production
+.env.development
+.env.*.local
+
+# 包含敏感信息的文档文件
+SUPABASE_SETUP.md
+DEPLOYMENT_GUIDE.md
 
 # macOS-specific files
 .DS_Store
@@ -34,3 +40,28 @@ ori
 
 # IndexNow 增量提交记录（由 Action 缓存管理）
 .indexnow-submitted.json
+
+# 其他可能包含敏感信息的文件
+*.key
+*.pem
+*.p12
+*.pfx
+config.local.*
+secrets.*
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# IDE 配置文件
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini

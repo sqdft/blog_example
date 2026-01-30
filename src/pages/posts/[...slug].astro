@@ -68,7 +68,9 @@ const jsonLd = {
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
                         <Icon name="material-symbols:visibility-outline-rounded"></Icon>
                     </div>
-                    <div class="text-sm"><span id={`busuanzi_page_pv`}>-</span> 阅读</div>
+                    <div class="text-sm">
+                        <span class="current-article-views" data-article-id={entry.slug} data-article-title={entry.data.title}>-</span> 阅读
+                    </div>
                 </div>
                 <div class="flex flex-row items-center">
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">

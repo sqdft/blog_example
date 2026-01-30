@@ -8,6 +8,7 @@ import {
 	googleAnalyticsConfig,
 	profileConfig,
 	siteConfig,
+	supabaseConfig,
 	umamiConfig,
 } from "@/config";
 import AntigravityBg from "@components/AntigravityBg.tsx";
@@ -356,6 +357,180 @@ const bannerOffset =
 				document.head.appendChild(busuanzi);
 			})();
 		</script>
+
+		<!-- Supabase 文章统计脚本 -->
+		{supabaseConfig.enable && (
+			<script is:inline define:vars={{supabaseConfig}}>
+				// Supabase 文章统计系统
+				window.BlogStats = {
+					supabaseUrl: supabaseConfig.url,
+					supabaseKey: supabaseConfig.anonKey,
+					supabase: null,
+					
+					// 初始化 Supabase 客户端
+					init: async function() {
+						if (this.supabase) return;
+						
+						// 动态加载 Supabase 客户端
+						const script = document.createElement('script');
+						script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+						
+						return new Promise((resolve) => {
+							script.onload = () => {
+								this.supabase = window.supabase.createClient(this.supabaseUrl, this.supabaseKey);
+								resolve();
+							};
+							document.head.appendChild(script);
+						});
+					},
+					
+					// 获取访客指纹（简单版本）
+					getVisitorId: function() {
+						const canvas = document.createElement('canvas');
+						const ctx = canvas.getContext('2d');
+						ctx.textBaseline = 'top';
+						ctx.font = '14px Arial';
+						ctx.fillText('Blog visitor fingerprint', 2, 2);
+						
+						const fingerprint = canvas.toDataURL() + 
+							navigator.userAgent + 
+							navigator.language + 
+							screen.width + 'x' + screen.height;
+						
+						// 生成简单哈希
+						let hash = 0;
+						for (let i = 0; i < fingerprint.length; i++) {
+							const char = fingerprint.charCodeAt(i);
+							hash = ((hash << 5) - hash) + char;
+							hash = hash & hash;
+						}
+						return Math.abs(hash).toString(36);
+					},
+					
+					// 记录文章访问
+					recordView: async function(articleSlug, articleTitle) {
+						if (!this.supabase) await this.init();
+						
+						const visitorId = this.getVisitorId();
+						const now = new Date().toISOString();
+						
+						try {
+							// 检查是否已经记录过这个访客对这篇文章的访问（24小时内）
+							const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+							
+							const { data: existingView } = await this.supabase
+								.from('article_views')
+								.select('id')
+								.eq('article_slug', articleSlug)
+								.eq('visitor_id', visitorId)
+								.gte('created_at', yesterday)
+								.single();
+							
+							if (!existingView) {
+								// 记录新的访问
+								await this.supabase
+									.from('article_views')
+									.insert({
+										article_slug: articleSlug,
+										article_title: articleTitle,
+										visitor_id: visitorId,
+										created_at: now
+									});
+							}
+						} catch (error) {
+							console.warn('统计记录失败:', error);
+						}
+					},
+					
+					// 获取文章浏览量
+					getArticleViews: async function(articleSlug) {
+						if (!this.supabase) await this.init();
+						
+						try {
+							const { count } = await this.supabase
+								.from('article_views')
+								.select('*', { count: 'exact', head: true })
+								.eq('article_slug', articleSlug);
+							
+							return count || 0;
+						} catch (error) {
+							console.warn('获取浏览量失败:', error);
+							return 0;
+						}
+					},
+					
+					// 批量获取多篇文章的浏览量
+					getBatchViews: async function(articleSlugs) {
+						if (!this.supabase) await this.init();
+						
+						try {
+							const { data } = await this.supabase
+								.from('article_views')
+								.select('article_slug')
+								.in('article_slug', articleSlugs);
+							
+							const viewCounts = {};
+							articleSlugs.forEach(slug => viewCounts[slug] = 0);
+							
+							if (data) {
+								data.forEach(view => {
+									viewCounts[view.article_slug] = (viewCounts[view.article_slug] || 0) + 1;
+								});
+							}
+							
+							return viewCounts;
+						} catch (error) {
+							console.warn('批量获取浏览量失败:', error);
+							return {};
+						}
+					},
+					
+					// 更新页面显示
+					updateDisplay: async function() {
+						// 更新文章列表中的统计
+						const listElements = document.querySelectorAll('.article-view-count');
+						if (listElements.length > 0) {
+							const slugs = Array.from(listElements).map(el => el.getAttribute('data-article-id'));
+							const viewCounts = await this.getBatchViews(slugs);
+							
+							listElements.forEach(el => {
+								const slug = el.getAttribute('data-article-id');
+								el.textContent = viewCounts[slug] || 0;
+							});
+						}
+						
+						// 更新当前文章的统计
+						const currentArticleEl = document.querySelector('.current-article-views');
+						if (currentArticleEl) {
+							const slug = currentArticleEl.getAttribute('data-article-id');
+							const title = currentArticleEl.getAttribute('data-article-title') || '';
+							
+							if (slug) {
+								// 记录访问
+								await this.recordView(slug, title);
+								// 获取并显示浏览量
+								const views = await this.getArticleViews(slug);
+								currentArticleEl.textContent = views;
+							}
+						}
+					}
+				};
+				
+				// 页面加载完成后更新显示
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', function() {
+						setTimeout(() => window.BlogStats.updateDisplay(), 1000);
+					});
+				} else {
+					setTimeout(() => window.BlogStats.updateDisplay(), 1000);
+				}
+				
+				// Swup 页面切换后更新
+				document.addEventListener('swup:contentReplaced', function() {
+					setTimeout(() => window.BlogStats.updateDisplay(), 1000);
+				});
+			</script>
+		)}
 
 	</head>
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
