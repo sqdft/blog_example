@@ -458,46 +458,68 @@ const bannerOffset =
 						}
 					},
 					
-					// 获取文章浏览量
-					getArticleViews: async function(articleSlug) {
-						if (!this.supabase) await this.init();
-						
-						try {
-							const { count } = await this.supabase
-								.from('article_views')
-								.select('*', { count: 'exact', head: true })
-								.eq('article_slug', articleSlug);
-							
-							return count || 0;
-						} catch (error) {
-							console.warn('获取浏览量失败:', error);
-							return 0;
-						}
-					},
-					
-					// 批量获取多篇文章的浏览量
-					getBatchViews: async function(articleSlugs) {
+					// 获取文章浏览量和访客数
+					getArticleStats: async function(articleSlug) {
 						if (!this.supabase) await this.init();
 						
 						try {
 							const { data } = await this.supabase
 								.from('article_views')
-								.select('article_slug')
+								.select('visitor_id')
+								.eq('article_slug', articleSlug);
+							
+							const views = data ? data.length : 0;
+							const visitors = data ? new Set(data.map(item => item.visitor_id)).size : 0;
+							
+							return { views, visitors };
+						} catch (error) {
+							console.warn('获取文章统计失败:', error);
+							return { views: 0, visitors: 0 };
+						}
+					},
+					
+					// 批量获取多篇文章的浏览量和访客数
+					getBatchStats: async function(articleSlugs) {
+						if (!this.supabase) await this.init();
+						
+						try {
+							const { data } = await this.supabase
+								.from('article_views')
+								.select('article_slug, visitor_id')
 								.in('article_slug', articleSlugs);
 							
 							const viewCounts = {};
-							articleSlugs.forEach(slug => viewCounts[slug] = 0);
+							const visitorCounts = {};
+							
+							articleSlugs.forEach(slug => {
+								viewCounts[slug] = 0;
+								visitorCounts[slug] = 0;
+							});
 							
 							if (data) {
+								// 统计浏览量（总记录数）
 								data.forEach(view => {
 									viewCounts[view.article_slug] = (viewCounts[view.article_slug] || 0) + 1;
 								});
+								
+								// 统计访客数（去重visitor_id）
+								const visitorsByArticle = {};
+								data.forEach(view => {
+									if (!visitorsByArticle[view.article_slug]) {
+										visitorsByArticle[view.article_slug] = new Set();
+									}
+									visitorsByArticle[view.article_slug].add(view.visitor_id);
+								});
+								
+								Object.keys(visitorsByArticle).forEach(slug => {
+									visitorCounts[slug] = visitorsByArticle[slug].size;
+								});
 							}
 							
-							return viewCounts;
+							return { viewCounts, visitorCounts };
 						} catch (error) {
-							console.warn('批量获取浏览量失败:', error);
-							return {};
+							console.warn('批量获取统计失败:', error);
+							return { viewCounts: {}, visitorCounts: {} };
 						}
 					},
 					
@@ -505,18 +527,27 @@ const bannerOffset =
 					updateDisplay: async function() {
 						// 更新文章列表中的统计
 						const listElements = document.querySelectorAll('.article-view-count');
+						const visitorElements = document.querySelectorAll('.article-visitor-count');
+						
 						if (listElements.length > 0) {
 							const slugs = Array.from(listElements).map(el => el.getAttribute('data-article-id'));
-							const viewCounts = await this.getBatchViews(slugs);
+							const { viewCounts, visitorCounts } = await this.getBatchStats(slugs);
 							
 							listElements.forEach(el => {
 								const slug = el.getAttribute('data-article-id');
 								el.textContent = viewCounts[slug] || 0;
 							});
+							
+							visitorElements.forEach(el => {
+								const slug = el.getAttribute('data-article-id');
+								el.textContent = visitorCounts[slug] || 0;
+							});
 						}
 						
 						// 更新当前文章的统计
 						const currentArticleEl = document.querySelector('.current-article-views');
+						const currentVisitorEl = document.querySelector('.current-article-visitors');
+						
 						if (currentArticleEl) {
 							const slug = currentArticleEl.getAttribute('data-article-id');
 							const title = currentArticleEl.getAttribute('data-article-title') || '';
@@ -524,9 +555,12 @@ const bannerOffset =
 							if (slug) {
 								// 记录访问
 								await this.recordView(slug, title);
-								// 获取并显示浏览量
-								const views = await this.getArticleViews(slug);
+								// 获取并显示统计
+								const { views, visitors } = await this.getArticleStats(slug);
 								currentArticleEl.textContent = views;
+								if (currentVisitorEl) {
+									currentVisitorEl.textContent = visitors;
+								}
 							}
 						}
 					}
