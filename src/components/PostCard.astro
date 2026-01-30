@@ -61,8 +61,8 @@ const { remarkPluginFrontmatter } = await entry.render();
                 </div>
             )}
             {title}
-            <Icon class="inline text-[2rem] text-[var(--primary)] md:hidden translate-y-0.5 absolute" name="material-symbols:chevron-right-rounded" ></Icon>
-            <Icon class="text-[var(--primary)] text-[2rem] transition-all duration-300 hidden md:inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0" name="material-symbols:chevron-right-rounded"></Icon>
+            <Icon class="inline text-lg text-[var(--primary)] md:hidden translate-y-0.5 ml-2" name="material-symbols:chevron-right-rounded" ></Icon>
+            <Icon class="text-[var(--primary)] text-xl transition-all duration-300 hidden md:inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0" name="material-symbols:chevron-right-rounded"></Icon>
         </a>
 
         <!-- metadata -->
@@ -85,13 +85,7 @@ const { remarkPluginFrontmatter } = await entry.render();
             </div>
             <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
                 <Icon name="material-symbols:visibility-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
-                <span class="text-xs" id={`busuanzi_page_pv_${entry.slug}`}>-</span>
                 <span class="text-xs">阅读</span>
-            </div>
-            <div class="flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--btn-regular-bg)]/50 backdrop-blur-sm border border-[var(--line-divider)]">
-                <Icon name="material-symbols:person-outline-rounded" class="text-sm text-[var(--primary)] opacity-90"></Icon>
-                <span class="text-xs" id={`busuanzi_page_uv_${entry.slug}`}>-</span>
-                <span class="text-xs">访客</span>
             </div>
             </div>
         </div>
@@ -116,17 +110,16 @@ const { remarkPluginFrontmatter } = await entry.render();
         </ImageWrapper>
     </a>}
 
-    {!hasCover &&
-        <a href={url} aria-label={title} class="!hidden md:!flex btn-regular w-[3.25rem]
-         absolute right-3 top-2.5 bottom-2.5 rounded-xl bg-[var(--enter-btn-bg)]
-         hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95
-         border border-[var(--line-divider)]
-        ">
-            <Icon name="material-symbols:chevron-right-rounded"
-                  class="transition text-[var(--primary)] text-4xl mx-auto">
-            </Icon>
-        </a>
-    }
+    <!-- 右侧点击按钮 - 始终显示 -->
+    <a href={url} aria-label={title} class="!hidden md:!flex btn-regular w-[3.25rem]
+     absolute right-3 top-2.5 bottom-2.5 rounded-xl bg-[var(--enter-btn-bg)]
+     hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95
+     border border-[var(--line-divider)]
+    ">
+        <Icon name="material-symbols:chevron-right-rounded"
+              class="transition text-[var(--primary)] text-4xl mx-auto">
+        </Icon>
+    </a>
 </div>
 <div class="transition border-t-[1px] border-dashed mx-6 border-black/10 dark:border-white/[0.15] last:border-t-0 md:hidden"></div>
 
