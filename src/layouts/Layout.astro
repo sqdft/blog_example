@@ -415,10 +415,12 @@ const bannerOffset =
 						const now = new Date().toISOString();
 						
 						try {
+							console.log('Recording view for:', articleSlug, 'visitor:', visitorId);
+							
 							// 检查是否已经记录过这个访客对这篇文章的访问（24小时内）
 							const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 							
-							const { data: existingView } = await this.supabase
+							const { data: existingView, error: selectError } = await this.supabase
 								.from('article_views')
 								.select('id')
 								.eq('article_slug', articleSlug)
@@ -426,9 +428,15 @@ const bannerOffset =
 								.gte('created_at', yesterday)
 								.single();
 							
+							if (selectError && selectError.code !== 'PGRST116') {
+								console.error('Select error:', selectError);
+								return;
+							}
+							
 							if (!existingView) {
+								console.log('Inserting new view record');
 								// 记录新的访问
-								await this.supabase
+								const { data, error: insertError } = await this.supabase
 									.from('article_views')
 									.insert({
 										article_slug: articleSlug,
@@ -436,9 +444,17 @@ const bannerOffset =
 										visitor_id: visitorId,
 										created_at: now
 									});
+								
+								if (insertError) {
+									console.error('Insert error:', insertError);
+								} else {
+									console.log('View recorded successfully');
+								}
+							} else {
+								console.log('View already recorded within 24h');
 							}
 						} catch (error) {
-							console.warn('统计记录失败:', error);
+							console.error('统计记录失败:', error);
 						}
 					},
 					
