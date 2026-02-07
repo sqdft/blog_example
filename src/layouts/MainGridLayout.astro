@@ -7,6 +7,7 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
+import PromotionCard from "../components/widget/PromotionCard.astro";
 import { siteConfig } from "../config";
 import {
 	BANNER_HEIGHT,
@@ -114,6 +115,16 @@ const mainPanelTop = siteConfig.banner.enable
                     <div class="h-8 w-full"></div>
                     <TOC headings={headings}></TOC>
                     <div class="h-8 w-full"></div>
+                    
+                    <!-- 推广卡片区域 -->
+                    <div class="px-2 mb-4">
+                        <PromotionCard 
+                            title="推荐阅读"
+                            description="点击查看更多精彩内容"
+                            image="https://g.gtimg.cn/music/photo_new/T053XD01000ID6X30dg8kF.png"
+                            link="https://blog-example-b97.pages.dev"
+                        />
+                    </div>
                 </div>
             </div>
         </div>}

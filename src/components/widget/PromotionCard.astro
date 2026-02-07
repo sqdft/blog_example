@@ -1,0 +1,56 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+	image: string;
+	link: string;
+	class?: string;
+}
+
+const { title, description, image, link } = Astro.props;
+const className = Astro.props.class;
+---
+
+<a 
+	href={link} 
+	target="_blank" 
+	rel="noopener noreferrer"
+	class:list={[
+		className,
+		"group block rounded-xl overflow-hidden transition-all duration-300",
+		"bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)]",
+		"border-2 border-[var(--line-divider)] hover:border-[var(--primary)]",
+		"shadow-sm hover:shadow-lg"
+	]}
+>
+	<div class="relative aspect-square overflow-hidden">
+		<img 
+			src={image} 
+			alt={title}
+			class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+		/>
+		<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+		
+		<!-- 箭头图标 -->
+		<div class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 dark:bg-black/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+			<svg class="w-4 h-4 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+			</svg>
+		</div>
+	</div>
+	
+	{(title || description) && (
+		<div class="p-3">
+			{title && (
+				<h3 class="text-sm font-semibold text-[var(--btn-content)] mb-1 line-clamp-2 group-hover:text-[var(--primary)] transition-colors">
+					{title}
+				</h3>
+			)}
+			{description && (
+				<p class="text-xs text-[var(--btn-content)]/60 line-clamp-2">
+					{description}
+				</p>
+			)}
+		</div>
+	)}
+</a>
