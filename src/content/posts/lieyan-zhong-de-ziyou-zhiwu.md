@@ -4,6 +4,11 @@ published: 2025-02-03
 description: 一首充满激情与力量的音乐作品，眼中的雪用独特的嗓音诠释自由与热情的完美融合。酷狗音乐高音质在线试听，感受烈焰般的音乐魅力！
 tags: [音乐推荐, 原创音乐, 眼中的雪, 自由之舞, 酷狗音乐]
 draft: false
+promotionCard:
+  title: "《烈焰中的自由之舞》"
+  description: "点击试听完整版"
+  image: "https://g.gtimg.cn/music/photo_new/T053XD01001mjxrm0RDgnP.jpg"
+  link: "https://www.kugou.com/share/17ie94dFYV2.html"
 ---
 
 # 《烈焰中的自由之舞》- 眼中的雪倾情演绎，点燃心中的自由火焰

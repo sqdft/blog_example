@@ -4,6 +4,11 @@ published: 2025-02-03
 description: 一部关于重生与复仇的玄幻小说，主角杨新重生归来，以剑为伴，掌控时光之力，书写属于自己的传奇。番茄小说免费连载中，已更新115章！
 tags: [小说推荐, 玄幻小说, 重生复仇, 剑修, 番茄小说]
 draft: false
+promotionCard:
+  title: "《时光剑神》免费阅读"
+  description: "点击前往番茄小说"
+  image: "https://g.gtimg.cn/music/photo_new/T053XD010017eQvt3m0xkv.png"
+  link: "https://fanqienovel.com/page/7483342346080242713"
 ---
 
 # 《时光剑神》- 重生复仇玄幻巨作，掌控时光的剑道传奇

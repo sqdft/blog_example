@@ -13,6 +13,14 @@ const postsCollection = defineCollection({
 		lang: z.string().optional().default(""),
 		pinned: z.boolean().optional().default(false),
 
+		/* 推广卡片配置 */
+		promotionCard: z.object({
+			title: z.string(),
+			description: z.string().optional(),
+			image: z.string(),
+			link: z.string(),
+		}).optional(),
+
 		/* 性能优化：预渲染所有内容（包括折叠区），适用于长文章 */
 		prerenderAll: z.boolean().optional().default(false),
 

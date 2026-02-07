@@ -23,6 +23,12 @@ interface Props {
 	lang?: string;
 	setOGTypeArticle?: boolean;
 	headings?: MarkdownHeading[];
+	promotionCard?: {
+		title: string;
+		description?: string;
+		image: string;
+		link: string;
+	};
 }
 
 const {
@@ -32,6 +38,7 @@ const {
 	lang,
 	setOGTypeArticle,
 	headings = [],
+	promotionCard,
 } = Astro.props;
 const hasBannerCredit =
 	siteConfig.banner.enable && siteConfig.banner.credit.enable;
@@ -116,15 +123,17 @@ const mainPanelTop = siteConfig.banner.enable
                     <TOC headings={headings}></TOC>
                     <div class="h-8 w-full"></div>
                     
-                    <!-- 推广卡片区域 -->
-                    <div class="px-2 mb-4">
-                        <PromotionCard 
-                            title="推荐阅读"
-                            description="点击查看更多精彩内容"
-                            image="https://g.gtimg.cn/music/photo_new/T053XD01000ID6X30dg8kF.png"
-                            link="https://blog-example-b97.pages.dev"
-                        />
-                    </div>
+                    <!-- 推广卡片区域 - 仅在配置了promotionCard时显示 -->
+                    {promotionCard && (
+                        <div class="px-2 mb-4">
+                            <PromotionCard 
+                                title={promotionCard.title}
+                                description={promotionCard.description}
+                                image={promotionCard.image}
+                                link={promotionCard.link}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>}
