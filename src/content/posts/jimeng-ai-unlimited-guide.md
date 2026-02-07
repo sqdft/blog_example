@@ -5,6 +5,11 @@ description: 面向需要长时间、批量化、持续出图的创作者，本�
 tags: [AI创作, 即梦AI, 批量生成, 创作工具]
 category: AI工具
 draft: false
+promotionCard:
+  title: "即梦AI创作工具"
+  description: "加入交流群获取更多"
+  image: "https://g.gtimg.cn/music/photo_new/T053XD01000ID6X30dg8kF.png"
+  link: "https://qm.qq.com/q/MBy8km4u4i"
 ---
 
 # 即梦AI：无限使用创作功能指南（稳定长时输出）
