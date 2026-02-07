@@ -122,19 +122,19 @@ const mainPanelTop = siteConfig.banner.enable
                     <div class="h-8 w-full"></div>
                     <TOC headings={headings}></TOC>
                     <div class="h-8 w-full"></div>
-                    
-                    <!-- 推广卡片区域 - 仅在配置了promotionCard时显示 -->
-                    {promotionCard && (
-                        <div class="px-2 mb-4">
-                            <PromotionCard 
-                                title={promotionCard.title}
-                                description={promotionCard.description}
-                                image={promotionCard.image}
-                                link={promotionCard.link}
-                            />
-                        </div>
-                    )}
                 </div>
+                
+                <!-- 推广卡片区域 - 移到TOC外部，避免Swup影响 -->
+                {promotionCard && (
+                    <div id="promotion-card-wrapper" class="px-2 mb-4 mt-4">
+                        <PromotionCard 
+                            title={promotionCard.title}
+                            description={promotionCard.description}
+                            image={promotionCard.image}
+                            link={promotionCard.link}
+                        />
+                    </div>
+                )}
             </div>
         </div>}
 
